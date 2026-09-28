@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reading on the green line</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="meta"><span class="line line-green">Green line</span> · now · 14 people reading</div>
+
+<h1>Reading on this line</h1>
+<p class="small">Rough positions only. Tap a book mark on the map.</p>
+
+<!-- Inline SVG test: shapes, text, and tappable links inside SVG. -->
+<svg width="100%" viewBox="0 0 360 250" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="border:2px solid #000; display:block;">
+  <line x1="60" y1="25" x2="60" y2="225" stroke="#000" stroke-width="6"/>
+  <g font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#000">
+    <circle cx="60" cy="25"  r="8" fill="#fff" stroke="#000" stroke-width="3"/><text x="78" y="30">T-Centralen</text>
+    <circle cx="60" cy="65"  r="8" fill="#fff" stroke="#000" stroke-width="3"/><text x="78" y="70">Gamla stan</text>
+    <circle cx="60" cy="105" r="8" fill="#fff" stroke="#000" stroke-width="3"/><text x="78" y="110">Slussen</text>
+    <circle cx="60" cy="145" r="8" fill="#fff" stroke="#000" stroke-width="3"/><text x="78" y="150">Medborgarplatsen</text>
+    <circle cx="60" cy="185" r="8" fill="#000"/><text x="78" y="190" font-weight="bold">Skanstull (you)</text>
+    <circle cx="60" cy="225" r="8" fill="#fff" stroke="#000" stroke-width="3"/><text x="78" y="230">Gullmarsplan</text>
+  </g>
+  <a xlink:href="#r1"><rect x="250" y="55"  width="34" height="44" fill="#000"/><text x="292" y="82" font-size="14" font-family="Helvetica, Arial, sans-serif">3</text></a>
+  <a xlink:href="#r2"><rect x="250" y="130" width="34" height="44" fill="#fff" stroke="#000" stroke-width="3"/><text x="292" y="157" font-size="14" font-family="Helvetica, Arial, sans-serif">5</text></a>
+  <a xlink:href="#r3"><rect x="250" y="190" width="34" height="44" fill="#000"/><text x="292" y="217" font-size="14" font-family="Helvetica, Arial, sans-serif">6</text></a>
+</svg>
+
+<h2 id="r1">Near Gamla stan</h2>
+<div class="card">
+  <div class="quote">Every city has a second map drawn only by the people who walk it every day.</div>
+  <p class="small"><span class="line line-green">Green line</span> · shared 07:41 · 2 others saved this</p>
+</div>
+
+<h2 id="r2">Near Medborgarplatsen</h2>
+<div class="card">
+  <div class="quote">The kettle was the only thing in the house that still sang in the mornings.</div>
+  <p class="small"><span class="line line-green">Green line</span> · shared 07:50</p>
+</div>
+
+<h2 id="r3">Around you</h2>
+<div class="card">
+  <div class="quote">She decided that a book read among strangers is never quite the same book read alone.</div>
+  <p class="small"><span class="line line-green">Green line</span> · you · just now</p>
+</div>
+
+<p class="small">Also today: <span class="line line-red">Red line</span> 22 readers · <span class="line line-blue">Blue line</span> 9 readers</p>
+
+<a class="btn" href="reading.html">Back to my book</a>
+<a class="btn quiet" href="index.html">Home</a>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Highlight saved</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="meta">Highlight saved · p. 112</div>
+
+<h1>Saved</h1>
+
+<div class="quote" id="q">She decided that a book read among strangers is never quite the same book read alone.</div>
+
+<p>Tagged with where you were when you read it:</p>
+<div class="card">
+  <p><span class="line line-green">Green line</span> · between Skanstull and Medborgarplatsen · 07:53</p>
+</div>
+
+<p class="small">Share it on the line? Others reading on the green line will see the sentence, never your name or exact position.</p>
+
+<div class="row">
+  <a class="btn primary" href="line.html">Share on the line</a>
+  <a class="btn" href="reading.html">Keep private</a>
+</div>
+
+<p class="small" id="js-status">JavaScript: off (showing default sentence)</p>
+
+<script>
+  // ES5 only: no arrow functions, no let/const, no template strings.
+  (function () {
+    var sentences = {
+      "1": "The train came out of the tunnel and the light changed all at once, the way it does in late September.",
+      "2": "Nobody looked up; everyone had their own small window to keep open.",
+      "3": "She decided that a book read among strangers is never quite the same book read alone."
+    };
+    var m = /[?&]n=(\d)/.exec(window.location.search);
+    var n = m ? m[1] : "3";
+    var el = document.getElementById("q");
+    if (sentences[n]) { el.innerHTML = sentences[n]; }
+    document.getElementById("js-status").innerHTML = "JavaScript: on (sentence " + n + " loaded from URL)";
+  })();
+</script>
+
+</body>
+</html>

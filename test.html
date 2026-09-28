@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kindle capability test</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .flexbox { display: -webkit-box; display: -webkit-flex; display: flex; border: 2px solid #000; margin: 8px 0; }
+  .flexbox div { -webkit-flex: 1; flex: 1; padding: 8px; text-align: center; border-right: 2px solid #000; }
+  .flexbox div:last-child { border-right: 0; }
+  .gridbox { display: grid; grid-template-columns: 1fr 1fr 1fr; border: 2px solid #000; margin: 8px 0; }
+  .gridbox div { padding: 8px; text-align: center; border-right: 2px solid #000; }
+  .gridbox div:last-child { border-right: 0; }
+  #tapbtn { display: block; width: 100%; padding: 18px; font-size: 20px; border: 3px solid #000; background: #fff; }
+</style>
+</head>
+<body>
+
+<div class="meta">Browser capability test · take a photo of this page</div>
+
+<h1>Capability test</h1>
+
+<noscript><div class="card"><strong>JavaScript is OFF.</strong> Only the visual CSS tests below are meaningful. Turn JS on in the Kindle browser menu and reload.</div></noscript>
+
+<table class="tests" id="results">
+  <tr><td>JavaScript</td><td class="r">FAIL</td></tr>
+</table>
+
+<h2>Visual layout tests</h2>
+<p class="small">Flexbox: three boxes side by side?</p>
+<div class="flexbox"><div>A</div><div>B</div><div>C</div></div>
+<p class="small">CSS grid: three boxes side by side?</p>
+<div class="gridbox"><div>A</div><div>B</div><div>C</div></div>
+<p class="small">Inline SVG: a black circle inside a square?</p>
+<svg width="80" height="80" viewBox="0 0 80 80"><rect x="2" y="2" width="76" height="76" fill="#fff" stroke="#000" stroke-width="3"/><circle cx="40" cy="40" r="22" fill="#000"/></svg>
+
+<h2>Tap latency</h2>
+<button id="tapbtn" type="button">Tap me</button>
+<p class="small" id="tapout">Tap the button: time from touch to visible change is shown here.</p>
+
+<a class="btn" href="index.html">Back to prototype</a>
+
+<script>
+(function () {
+  var rows = [];
+  function add(name, ok, note) {
+    rows.push("<tr><td>" + name + (note ? "<br><span class='small'>" + note + "</span>" : "") +
+              "</td><td class='r'>" + (ok ? "OK" : "NO") + "</td></tr>");
+  }
+  function tryEval(src) { try { new Function(src); return true; } catch (e) { return false; } }
+  function cssSupports(p, v) {
+    try { if (window.CSS && CSS.supports) { return CSS.supports(p, v); } } catch (e) {}
+    var d = document.createElement("div");
+    try { d.style[p] = v; } catch (e2) {}
+    return d.style[p] === v;
+  }
+
+  add("JavaScript", true);
+  add("ES6 let / const", tryEval("let a = 1; const b = 2;"));
+  add("ES6 arrow functions", tryEval("var f = (x) => x * 2;"));
+  add("ES6 template strings", tryEval("var s = `a${1}`;"));
+  add("async / await", tryEval("async function f(){ await 1; }"));
+  add("Promise", typeof Promise !== "undefined");
+  add("fetch()", typeof window.fetch === "function");
+
+  var ls = false;
+  try { localStorage.setItem("__t", "1"); ls = localStorage.getItem("__t") === "1"; localStorage.removeItem("__t"); } catch (e) {}
+  add("localStorage", ls);
+
+  add("CSS flexbox", cssSupports("display", "flex"));
+  add("CSS grid", cssSupports("display", "grid"));
+  add("CSS variables", cssSupports("--x", "1"));
+  add("CSS transitions", cssSupports("transition", "opacity 1s"));
+  add("Touch events", "ontouchstart" in window);
+  add("Pointer events", typeof window.PointerEvent !== "undefined");
+  add("requestAnimationFrame", typeof window.requestAnimationFrame === "function");
+
+  // Rough CPU benchmark: 2 million loop iterations.
+  var t0 = new Date().getTime(), x = 0;
+  for (var i = 0; i < 2000000; i++) { x += i % 7; }
+  var ms = new Date().getTime() - t0;
+  add("CPU loop (2M iterations)", ms < 1500, ms + " ms (a laptop is ~5 ms)");
+
+  var ua = navigator.userAgent;
+  var chrome = /Chrome\/(\d+)/.exec(ua);
+  add("Engine", true, chrome ? "Chromium " + chrome[1] : "not Chromium");
+  add("Screen", true, window.innerWidth + " × " + window.innerHeight + " px, DPR " + (window.devicePixelRatio || 1));
+  add("User agent", true, ua);
+
+  document.getElementById("results").innerHTML = rows.join("");
+
+  // Tap latency: measure from touchstart (or mousedown) to next paint-ish tick.
+  var btn = document.getElementById("tapbtn"), out = document.getElementById("tapout"), start = 0, n = 0;
+  function down() { start = new Date().getTime(); }
+  function up() {
+    n++;
+    var d = new Date().getTime() - (start || new Date().getTime());
+    btn.style.background = (n % 2) ? "#000" : "#fff";
+    btn.style.color = (n % 2) ? "#fff" : "#000";
+    out.innerHTML = "Tap " + n + ": handler ran " + d + " ms after touch. Also judge by eye how long the screen took to change.";
+  }
+  if ("ontouchstart" in window) { btn.addEventListener("touchstart", down, false); }
+  btn.addEventListener("mousedown", down, false);
+  btn.addEventListener("click", up, false);
+})();
+</script>
+
+</body>
+</html>
